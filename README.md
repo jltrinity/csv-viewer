@@ -47,6 +47,31 @@ http://127.0.0.1:5000
 4. La aplicación detectará automáticamente la cabecera y mostrará los parámetros numéricos disponibles.
 5. Marca o desmarca los parámetros que quieras visualizar y pulsa **Ver gráfica**.
 
+## Docker
+
+Necesitas Docker con el complemento Docker Compose y el puerto 5000 libre.
+No es necesario instalar Python ni crear un entorno virtual en el equipo.
+
+```bash
+make docker-up
+```
+
+El comando construye la imagen, arranca el contenedor en segundo plano y espera
+a que la aplicación responda. Abre **http://localhost:5000**.
+La primera construcción necesita conexión a Internet para descargar la imagen
+de Python y las dependencias.
+
+```bash
+make docker-logs  # Consultar los registros (Ctrl+C para salir)
+make docker-down  # Detener y eliminar el contenedor
+```
+
+Después de modificar el código, ejecuta de nuevo `make docker-up` para reconstruir
+la imagen. El contenedor utiliza Python 3.12 y Gunicorn sin el depurador de Flask,
+con un único proceso de trabajo porque los CSV se guardan en memoria.
+Los archivos cargados se pierden al reiniciar el proceso o recrear el contenedor.
+El puerto 5000 se publica únicamente en la interfaz local del equipo.
+
 ## Comandos Make
 
 - `make help`: muestra los comandos disponibles.
@@ -55,6 +80,9 @@ http://127.0.0.1:5000
 - `make install`: instala las dependencias desde `requirements.txt`.
 - `make run`: instala las dependencias si hace falta y lanza la app con `python app.py`.
 - `make test`: ejecuta los tests de la aplicación.
+- `make docker-up`: construye y arranca el contenedor en el puerto 5000.
+- `make docker-down`: detiene y elimina el contenedor.
+- `make docker-logs`: muestra los registros del contenedor.
 - `make clean`: elimina el entorno virtual `venv/`.
 
 ## Tests

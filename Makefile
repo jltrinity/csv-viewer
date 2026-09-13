@@ -6,7 +6,7 @@ PIP_COMPILE := $(VENV)/bin/pip-compile
 
 .DEFAULT_GOAL := help
 
-.PHONY: help venv compile install run test clean .check-venv-active
+.PHONY: help venv compile install run test docker-up docker-down docker-logs clean .check-venv-active
 
 help:
 	@printf "Comandos disponibles:\n"
@@ -15,6 +15,9 @@ help:
 	@printf "  🔧 make install  Instala las dependencias desde requirements.txt.\n"
 	@printf "  🚀 make run      Instala dependencias y lanza la app.\n"
 	@printf "  🧪 make test     Ejecuta los tests de la aplicación.\n"
+	@printf "  🐳 make docker-up    Construye y arranca la app en http://localhost:5000.\n"
+	@printf "  🛑 make docker-down  Detiene y elimina el contenedor.\n"
+	@printf "  📋 make docker-logs  Muestra los registros del contenedor.\n"
 	@printf "  🧹 make clean    Elimina el entorno virtual $(VENV)/.\n"
 
 venv:
@@ -44,6 +47,16 @@ run: .check-venv-active
 
 test:
 	$(PYTHON) -m pytest -v
+
+docker-up:
+	docker compose up --build --wait --wait-timeout 60
+	@printf "Aplicación disponible en http://localhost:5000\n"
+
+docker-down:
+	docker compose down
+
+docker-logs:
+	docker compose logs --follow
 
 clean:
 	rm -rf $(VENV)
