@@ -1,0 +1,40 @@
+# Entornos virtuales de Python
+venv/
+.venv/
+env/
+
+# Bytecode y cachés
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Distribuciones y metadatos de paquetes
+build/
+dist/
+*.egg-info/
+
+# Configuración local y secretos
+.env
+.env.*
+!.env.example
+!.env.sample
+/instance/
+
+# Cobertura y registros
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.log
+
+# Archivos temporales del editor y del sistema
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Carpeta de importación de ficheros
+import

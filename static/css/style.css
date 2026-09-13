@@ -1,0 +1,357 @@
+:root {
+  color-scheme: dark;
+  background-color: #0b1220;
+  color: #e9edf7;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  /* allow vertical scrolling by aligning to start */
+  align-items: center;
+  background-color: #0b1220;
+  font-family: Inter, system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 3rem 1rem 6rem 1rem;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 980px;
+}
+
+.card {
+  background: rgba(16, 24, 42, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  border-radius: 1.25rem;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.form-label,
+.page-subtitle,
+.text-secondary,
+.file-name {
+  color: #cbd5e1;
+}
+
+.form-control,
+.form-select {
+  background: rgba(15, 23, 42, 0.95);
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.22);
+}
+
+.params-list {
+  display: grid;
+  gap: 0.75rem;
+  max-height: 220px;
+  overflow: auto;
+  padding-right: 0.5rem;
+}
+
+.preview-scroll {
+  max-height: 360px;
+  overflow: auto;
+}
+
+/* Ensure clear separation between stacked card blocks */
+.card.mb-4 {
+  margin-bottom: 1.75rem !important;
+}
+
+.card + .card {
+  margin-top: 1.25rem;
+}
+
+.form-check-input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.2rem;
+  background-color: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.form-check-input:checked {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-color: #2563eb;
+}
+
+.form-check-label {
+  color: #e6eef8;
+  margin-left: 0.5rem;
+}
+
+.btn-primary,
+.btn-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.95rem;
+  padding: 0.95rem 1.4rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-upload:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.25);
+}
+
+.btn-upload {
+  width: 100%;
+  box-sizing: border-box;
+  justify-self: center;
+  max-width: 100%;
+}
+
+.btn-view-chart {
+  margin-top: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.param-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem !important;
+}
+
+.file-upload {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.file-upload .alert {
+  margin: 0;
+}
+
+.btn-file-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 0.75rem 1rem;
+  border: 1px solid #64748b;
+  border-radius: 0.95rem;
+  background: #334155;
+  color: #f8fafc;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-file-action:hover {
+  background: #475569;
+  border-color: #94a3b8;
+  color: #fff;
+}
+
+.btn-file-action:focus-visible {
+  outline: 2px solid #cbd5e1;
+  outline-offset: 3px;
+}
+
+.page-header {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.2rem;
+}
+
+.page-subtitle {
+  color: #94a3b8;
+}
+
+.chart-card {
+  overflow-x: auto;
+}
+
+.stats-card {
+  margin-bottom: 1.75rem;
+}
+
+.section-title {
+  color: #e9edf7;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.stats-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0.75rem;
+  background: rgba(15, 23, 42, 0.52);
+}
+
+.stats-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  color: #dbe7f5;
+}
+
+.stats-table thead {
+  background: rgba(30, 41, 59, 0.9);
+}
+
+.stats-table tbody tr {
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  transition: background 0.2s ease;
+}
+
+.stats-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.stats-table th {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.stats-table td,
+.stats-table th {
+  padding: 1rem 1.1rem;
+  white-space: nowrap;
+}
+
+.stats-table thead th {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.param-name {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  color: #e9edf7;
+}
+
+.numeric-cell {
+  text-align: right;
+}
+
+.stat-value {
+  display: inline-flex;
+  justify-content: flex-end;
+  min-width: 5.5rem;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 0.55rem;
+  background: rgba(2, 6, 23, 0.28);
+  color: #cbd5e1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-value-strong {
+  border-color: rgba(96, 165, 250, 0.28);
+  background: rgba(59, 130, 246, 0.12);
+  color: #dbeafe;
+}
+
+.app-footer {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 980px;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  padding-top: 1.25rem;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.alert {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  overflow-wrap: anywhere;
+}
+
+.alert-success {
+  background: #d1e7dd;
+  border-color: #a3cfbb;
+  color: #0a3622;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  border-color: #f1aeb5;
+  color: #58151c;
+}
+
+.alert-warning {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: #fde68a;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    text-align: left;
+  }
+  .page-subtitle {
+    margin: 0 auto 1.5rem;
+    max-width: 100%;
+  }
+  .card-body {
+    padding: 1.5rem;
+  }
+  .btn-primary {
+    width: 100%;
+  }
+  .file-name {
+    margin-top: 0.5rem;
+  }
+}
+
+/* Outline button style for select/deselect actions */
+.btn-outline-light {
+  color: #e6eef8;
+  background: transparent;
+  border: 1px solid rgba(226, 232, 240, 0.08);
+}
+
+.btn-outline-light:hover {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(226,232,240,0.18);
+}
+
+.btn-sm {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+}

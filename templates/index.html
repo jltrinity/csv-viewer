@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LogViewer CSV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-VF7Jw4ZrU9sQKk0N0ft2SZF5gX5fO7rwNQ/vircVfFntyZgo5YhC/gv1xlGL2H3N" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <div class="main-container">
+      <header class="page-header text-white text-center mb-5">
+        <p class="text-uppercase small mb-2 text-secondary">Herramienta de visualización</p>
+        <h1 class="display-5 fw-bold">LogViewer CSV</h1>
+        <p class="page-subtitle mx-auto col-lg-6">Carga un archivo CSV y visualiza gráficos interactivos de sus parámetros numéricos en tiempo real.</p>
+      </header>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data" id="upload-form">
+            <input type="hidden" name="action" id="form-action" value="plot">
+            <div class="mb-4 file-upload">
+              <label class="form-label">Selecciona tu archivo</label>
+              <input type="file" id="csv_file" name="csv_file" accept=".csv" hidden {% if not filename %}required{% endif %} />
+              <label class="btn-upload" for="csv_file">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 9L12 3L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 21H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Seleccionar archivo CSV
+              </label>
+              {% if message %}
+              <div class="alert alert-{{ message_type }}" role="alert">
+                {{ message }}
+              </div>
+              {% endif %}
+              <span id="file-name" class="file-name">{{ filename or 'Ningún archivo seleccionado' }}</span>
+            </div>
+
+            {% if filename or message or columns %}
+            <div class="param-actions">
+              {% if columns %}
+              <button type="button" id="select-all" class="btn btn-file-action">Seleccionar todo</button>
+              <button type="button" id="deselect-all" class="btn btn-file-action">Deseleccionar todo</button>
+              {% endif %}
+              <button type="submit" form="clear-file-form" class="btn btn-file-action">Quitar fichero</button>
+            </div>
+            {% endif %}
+
+            {% if columns %}
+            <input type="hidden" name="parameters_visible" value="1">
+            <div class="mb-4">
+              <label class="form-label">Parámetros (marca para mostrar)</label>
+              <div class="params-list row g-2">
+                {% for col in columns %}
+                <div class="col-6 col-sm-4 col-md-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="columns" value="{{ col }}" id="col-{{ loop.index }}" {% if col in selected %}checked{% endif %}>
+                    <label class="form-check-label" for="col-{{ loop.index }}">{{ col }}</label>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="form-text text-white-50">Marca para mostrar el parámetro; desmarca para ocultarlo.</div>
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary btn-view-chart">Ver gráfica</button>
+          </form>
+
+          <form method="post" action="{{ url_for('index') }}" id="clear-file-form">
+            <input type="hidden" name="action" value="clear">
+          </form>
+        </div>
+      </div>
+
+      <div class="my-4"></div>
+      {% if stats %}
+      <div class="card stats-card">
+        <div class="card-body">
+          <h2 class="section-title">Resumen de parámetros</h2>
+          <div class="stats-table-wrap">
+            <table class="stats-table">
+              <thead>
+                <tr>
+                  <th scope="col">Parámetro</th>
+                  <th scope="col" class="numeric-cell">Mínimo</th>
+                  <th scope="col" class="numeric-cell">Máximo</th>
+                  <th scope="col" class="numeric-cell">Promedio</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in stats %}
+                <tr>
+                  <th scope="row"><span class="param-name">{{ item.name }}</span></th>
+                  <td class="numeric-cell"><span class="stat-value">{{ item.min }}</span></td>
+                  <td class="numeric-cell"><span class="stat-value">{{ item.max }}</span></td>
+                  <td class="numeric-cell"><span class="stat-value stat-value-strong">{{ item.mean }}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if chart %}
+      <div class="card chart-card">
+        <div class="card-body">
+          {{ chart | safe }}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <footer class="app-footer">
+      <span>JLR - LogViewer CSV - {{ current_year }}</span>
+    </footer>
+    <script>
+      const csvInput = document.getElementById('csv_file');
+      const fileName = document.getElementById('file-name');
+      const uploadForm = document.getElementById('upload-form');
+      const formAction = document.getElementById('form-action');
+      if (uploadForm && formAction) {
+        uploadForm.addEventListener('submit', () => {
+          if (formAction.value !== 'load') formAction.value = 'plot';
+        });
+      }
+      if (csvInput && fileName && uploadForm && formAction) {
+        csvInput.addEventListener('change', () => {
+          fileName.textContent = csvInput.files.length
+            ? csvInput.files[0].name
+            : 'Ningún archivo seleccionado';
+          if (csvInput.files.length) {
+            formAction.value = 'load';
+            uploadForm.requestSubmit();
+          }
+        });
+      }
+      // Select/Deselect all parameter checkboxes
+      const selectAllBtn = document.getElementById('select-all');
+      const deselectAllBtn = document.getElementById('deselect-all');
+      function setAllParams(value) {
+        document.querySelectorAll('input[name="columns"]').forEach(cb => cb.checked = value);
+      }
+      if (selectAllBtn) selectAllBtn.addEventListener('click', () => setAllParams(true));
+      if (deselectAllBtn) deselectAllBtn.addEventListener('click', () => setAllParams(false));
+    </script>
+  </body>
+</html>
